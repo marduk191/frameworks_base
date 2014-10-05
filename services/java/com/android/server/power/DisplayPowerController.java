@@ -552,8 +552,10 @@ final class DisplayPowerController {
         if (!DEBUG_PRETEND_PROXIMITY_SENSOR_ABSENT) {
             mProximitySensor = mSensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
             if (mProximitySensor != null) {
-                mProximityThreshold = Math.min(mProximitySensor.getMaximumRange(),
-                        TYPICAL_PROXIMITY_THRESHOLD);
+                float mSensorMaxRange = mProximitySensor.getMaximumRange();
+                if (mSensorMaxRange == 0 || mSensorMaxRange < 0) mSensorMaxRange = TYPICAL_PROXIMITY_THRESHOLD;
+                    mProximityThreshold = Math.min(mSensorMaxRange,
+                            TYPICAL_PROXIMITY_THRESHOLD);
             }
         }
 
